@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import onboardingService, { OnboardingData } from '../../services/onboardingService';
-import { styles } from './onboarding.styles';
+import { styles } from '../../styles/onboarding/onboarding.styles';
 
 // Gender Step Component
 const GenderStep = ({ selected, onSelect }: { selected: string; onSelect: (value: string) => void }) => {
@@ -60,21 +60,21 @@ const GenderStep = ({ selected, onSelect }: { selected: string; onSelect: (value
 // Goal Step Component
 const GoalStep = ({ selected, onSelect }: { selected: string; onSelect: (value: string) => void }) => {
   const options = [
-    { 
-      value: 'lose', 
-      label: 'Lose Weight', 
+    {
+      value: 'lose',
+      label: 'Lose Weight',
       icon: 'trending-down' as const,
       description: 'Burn fat and get lean'
     },
-    { 
-      value: 'maintain', 
-      label: 'Maintain', 
+    {
+      value: 'maintain',
+      label: 'Maintain',
       icon: 'remove' as const,
       description: 'Stay fit and healthy'
     },
-    { 
-      value: 'gain', 
-      label: 'Gain Weight', 
+    {
+      value: 'gain',
+      label: 'Gain Weight',
       icon: 'trending-up' as const,
       description: 'Build muscle mass'
     },
@@ -177,17 +177,17 @@ const WorkoutStep = ({ selected, onSelect }: { selected: string; onSelect: (valu
 };
 
 // Birthdate Step Component
-const BirthdateStep = ({ 
-  day, 
-  month, 
-  year, 
-  onDayChange, 
-  onMonthChange, 
-  onYearChange 
-}: { 
-  day: string; 
-  month: string; 
-  year: string; 
+const BirthdateStep = ({
+  day,
+  month,
+  year,
+  onDayChange,
+  onMonthChange,
+  onYearChange
+}: {
+  day: string;
+  month: string;
+  year: string;
   onDayChange: (value: string) => void;
   onMonthChange: (value: string) => void;
   onYearChange: (value: string) => void;
@@ -203,10 +203,10 @@ const BirthdateStep = ({
             <Ionicons name="calendar" size={48} color="#fff" />
           </LinearGradient>
         </View>
-        
+
         <Text style={styles.birthdateTitle}>When's your birthday?</Text>
         <Text style={styles.birthdateSubtitle}>We'll calculate your age for better recommendations</Text>
-        
+
         <View style={styles.birthdateInputs}>
           <View style={styles.birthdateInputWrapper}>
             <Text style={styles.inputLabel}>Day</Text>
@@ -222,7 +222,7 @@ const BirthdateStep = ({
               />
             </View>
           </View>
-          
+
           <View style={styles.birthdateInputWrapper}>
             <Text style={styles.inputLabel}>Month</Text>
             <View style={styles.inputContainer}>
@@ -237,7 +237,7 @@ const BirthdateStep = ({
               />
             </View>
           </View>
-          
+
           <View style={styles.birthdateInputWrapper}>
             <Text style={styles.inputLabel}>Year</Text>
             <View style={styles.inputContainer}>
@@ -259,14 +259,14 @@ const BirthdateStep = ({
 };
 
 // Measurements Step Component
-const MeasurementsStep = ({ 
-  height, 
-  weight, 
-  onHeightChange, 
-  onWeightChange 
-}: { 
-  height: string; 
-  weight: string; 
+const MeasurementsStep = ({
+  height,
+  weight,
+  onHeightChange,
+  onWeightChange
+}: {
+  height: string;
+  weight: string;
   onHeightChange: (value: string) => void;
   onWeightChange: (value: string) => void;
 }) => {
@@ -280,7 +280,7 @@ const MeasurementsStep = ({
           <Ionicons name="fitness" size={32} color="#fff" />
           <Text style={styles.measurementHeaderTitle}>Your Measurements</Text>
         </LinearGradient>
-        
+
         <View style={styles.measurementBody}>
           <View style={styles.measurementInputContainer}>
             <TextInput
@@ -296,7 +296,7 @@ const MeasurementsStep = ({
             </View>
           </View>
           <Text style={styles.measurementHint}>Height</Text>
-          
+
           <View style={[styles.measurementInputContainer, { marginTop: 20 }]}>
             <TextInput
               style={styles.measurementInput}
@@ -322,7 +322,7 @@ export default function OnboardingScreen() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [fadeAnim] = useState(new Animated.Value(1));
-  
+
   // Form data
   const [gender, setGender] = useState('');
   const [goal, setGoal] = useState('');
@@ -370,7 +370,7 @@ export default function OnboardingScreen() {
         const dayNum = parseInt(day);
         const monthNum = parseInt(month);
         const yearNum = parseInt(year);
-        
+
         if (dayNum < 1 || dayNum > 31) {
           Alert.alert('Invalid', 'Day must be between 1 and 31');
           return false;
@@ -383,7 +383,7 @@ export default function OnboardingScreen() {
           Alert.alert('Invalid', 'Please enter a valid year');
           return false;
         }
-        
+
         // Check age
         const birthDate = new Date(yearNum, monthNum - 1, dayNum);
         const age = new Date().getFullYear() - birthDate.getFullYear();
@@ -399,7 +399,7 @@ export default function OnboardingScreen() {
         }
         const heightNum = parseFloat(height);
         const weightNum = parseFloat(weight);
-        
+
         if (heightNum <= 0 || heightNum > 3) {
           Alert.alert('Invalid', 'Please enter a valid height in meters (e.g., 1.75)');
           return false;
@@ -427,7 +427,7 @@ export default function OnboardingScreen() {
         useNativeDriver: true,
       }),
     ]).start();
-    
+
     setTimeout(callback, 150);
   };
 
@@ -464,7 +464,7 @@ export default function OnboardingScreen() {
       };
 
       await onboardingService.saveOnboardingData(onboardingData);
-      router.replace('/(tabs)');
+      router.push('/(onboarding)/ai-results');
     } catch (error) {
       Alert.alert('Error', 'Failed to save onboarding data. Please try again.');
     }
@@ -506,7 +506,7 @@ export default function OnboardingScreen() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      
+
       {/* Header with Progress */}
       <LinearGradient
         colors={['#667eea', '#764ba2']}
@@ -515,24 +515,24 @@ export default function OnboardingScreen() {
         <View style={styles.headerContent}>
           <View style={styles.progressBarContainer}>
             <View style={styles.progressBar}>
-              <View 
+              <View
                 style={[
-                  styles.progressFill, 
+                  styles.progressFill,
                   { width: `${((currentStep + 1) / totalSteps) * 100}%` }
-                ]} 
+                ]}
               />
             </View>
             <Text style={styles.progressText}>
               Step {currentStep + 1} of {totalSteps}
             </Text>
           </View>
-          
+
           {/* Step Indicators */}
           <View style={styles.stepIndicatorContainer}>
             <View style={styles.stepIndicatorWrapper}>
               {Array.from({ length: totalSteps }).map((_, index) => (
                 <React.Fragment key={index}>
-                  <View 
+                  <View
                     style={[
                       styles.stepIndicator,
                       index === currentStep && styles.stepIndicatorActive,
@@ -542,7 +542,7 @@ export default function OnboardingScreen() {
                     {index < currentStep ? (
                       <Ionicons name="checkmark" size={16} color="#667eea" />
                     ) : (
-                      <Text 
+                      <Text
                         style={[
                           styles.stepIndicatorText,
                           index === currentStep && styles.stepIndicatorTextActive,
@@ -553,18 +553,18 @@ export default function OnboardingScreen() {
                     )}
                   </View>
                   {index < totalSteps - 1 && (
-                    <View 
+                    <View
                       style={[
                         styles.stepConnector,
                         index < currentStep && styles.stepConnectorActive,
-                      ]} 
+                      ]}
                     />
                   )}
                 </React.Fragment>
               ))}
             </View>
           </View>
-          
+
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitle}>{stepTitles[currentStep]}</Text>
             <Text style={styles.headerSubtitle}>Complete your profile</Text>
@@ -573,7 +573,7 @@ export default function OnboardingScreen() {
       </LinearGradient>
 
       {/* Content */}
-      <ScrollView 
+      <ScrollView
         style={styles.content}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
@@ -587,7 +587,7 @@ export default function OnboardingScreen() {
       <View style={styles.navigationContainer}>
         <View style={styles.navigationButtons}>
           {currentStep > 0 && (
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.backButton}
               onPress={handleBack}
             >
@@ -595,9 +595,9 @@ export default function OnboardingScreen() {
               <Text style={styles.backButtonText}>Back</Text>
             </TouchableOpacity>
           )}
-          
+
           {currentStep < totalSteps - 1 ? (
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[styles.nextButton, currentStep === 0 && styles.nextButtonFull]}
               onPress={handleNext}
             >
@@ -610,7 +610,7 @@ export default function OnboardingScreen() {
               </LinearGradient>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.nextButton}
               onPress={handleComplete}
             >
