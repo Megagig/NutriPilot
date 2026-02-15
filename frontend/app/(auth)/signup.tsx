@@ -48,8 +48,8 @@ export default function SignUp() {
       await authService.register({ email, password, name });
       Alert.alert(
         'Success',
-        'Account created! Please check your email to verify your account.',
-        [{ text: 'OK', onPress: () => router.replace('/(auth)/signin') }]
+        'Account created successfully!',
+        [{ text: 'OK', onPress: () => router.replace('/(onboarding)' as any) }]
       );
     } catch (error: any) {
       Alert.alert(

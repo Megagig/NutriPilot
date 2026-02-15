@@ -16,6 +16,7 @@ import {
     View,
 } from 'react-native';
 import authService from '../../services/authService';
+import onboardingService from '../../services/onboardingService';
 
 export default function SignIn() {
   const router = useRouter();
@@ -33,7 +34,14 @@ export default function SignIn() {
     setLoading(true);
     try {
       await authService.login({ email, password });
-      router.replace('/(tabs)');
+      
+      // Check if onboarding is completed
+      const onboardingCompleted = await onboardingService.isOnboardingCompleted();
+      if (onboardingCompleted) {
+        router.replace('/(tabs)');
+      } else {
+        router.replace('/(onboarding)' as any);
+      }
     } catch (error: any) {
       Alert.alert(
         'Login Failed',
